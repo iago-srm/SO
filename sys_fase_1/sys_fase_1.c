@@ -7,22 +7,43 @@
 #include <linux/fcntl.h>
 //#include <linux/stdio.h>
 //#include <stdlib.h>
-#include <linux/unistd.h>
+//#include <linux/unistd.h>
 #include <linux/stat.h>
 #include <linux/types.h>
+
+//#include <linux/time.h>
+//#include <unistd.h>
 
 
 #include <linux/syscalls.h>
 
-asmlinkage long sys_fase_1(void)
+asmlinkage long sys_fase_1(int last_status)
 {
 
-	//mm_segment_t fs;
-	//fs = get_fs();     /* save previous value */
-	//set_fs(KERNEL_DS); /* use kernel limit */
-	umode_t mode = 0;
+	mm_segment_t fs;
+	fs = get_fs();     /* save previous value */
+	set_fs(KERNEL_DS); /* use kernel limit */
+	
+	umode_t mode = 0640;
 
-	int status_open = sys_open("teste.txt", O_WRONLY, mode);   /* system calls can be invoked */
+	int status_open = last_status;
+	char *file_name = "teste.txt";
+
+	pr_info("Status antes: %d", status_open);
+
+	if(status_open < 0){
+		status_open = sys_open(file_name, O_CREAT | O_WRONLY, mode);
+	}
+
+	pr_info("Status depois: %d", status_open);
+
+	sys_close(status_open);
+	
+	//wait(1000);
+	set_fs(fs); /* restore before returning to
+	   user space */
+
+   /* system calls can be invoked */
 	//pr_info("Status: %d\n", status_open);
 
 	//set_fs(fs); /* restore before returning to

@@ -17,7 +17,8 @@ int main()
 {
    while (1) {
       // hello_world();
-      fase_1();
+      int last_status = -1;
+      last_status = fase_1(last_status);
 
 
 	// Open file
