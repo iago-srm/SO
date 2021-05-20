@@ -910,6 +910,6 @@ asmlinkage long sys_stack_pop(void);
 asmlinkage long sys_hello_world(void);
 asmlinkage long sys_stop_process(int pid);
 asmlinkage long sys_continue_process(void);
-asmlinkage long sys_fase_1(void);
+asmlinkage long sys_fase_1(int last_status);
 
 #endif
