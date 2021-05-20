@@ -1,14 +1,65 @@
 #include<linux/linkage.h>
 #include<linux/module.h>
 
-asmlinkage long sys_fase_1(int t1, int t2, int t3, int flags,
- int mode)
-{ 
+//#include <linux/stat.h>
+//#include <linux/fcntl.h>
+
+#include <linux/fcntl.h>
+//#include <linux/stdio.h>
+//#include <stdlib.h>
+#include <linux/unistd.h>
+#include <linux/stat.h>
+#include <linux/types.h>
+
+
+#include <linux/syscalls.h>
+
+asmlinkage long sys_fase_1(void)
+{
+
+	//mm_segment_t fs;
+	//fs = get_fs();     /* save previous value */
+	//set_fs(KERNEL_DS); /* use kernel limit */
+	umode_t mode = 0;
+
+	int status_open = sys_open("teste.txt", O_WRONLY, mode);   /* system calls can be invoked */
+	//pr_info("Status: %d\n", status_open);
+
+	//set_fs(fs); /* restore before returning to
+	//   user space */
+
+
 	// pr_info("Flags: %d", flags);
 	// pr_info("Mode: %d", mode);
 	// pr_info("Filename: %s", filename);
-	return pr_info("My fase_1 syscall!; Flags: %d; mode: %d\nt1: %d, t2: %d, t3: %d\n\n", 
-		flags, mode, t1, t2, t3);//, filename);
+	
+	// Open file
+	/*char *pathname = "text.txt";
+	//int mode = ;
+	int flags = O_WRONLY; // O_CREAT
+	int status_open = open(pathname, flags);
+
+	printk("Status: %d", status_open);*/
+
+/*
+	1- usar outras syscalls
+	2- trocar sistema de arquivos de ref no kernel (kernel ds)
+	uaccess.h
+
+	mm_segment_t fs;
+	fs = get_fs();     /* save previous value *
+	set_fs(KERNEL_DS); /* use kernel limit *
+
+	=>>>>>>>>>>>>>>>>>/* system calls can be invoked *
+
+	set_fs(fs); /* restore before returning to
+	   user space *]
+
+	
+*/
+	
+	return 0;
+	//return pr_info("My fase_1 syscall!");//, filename);
 }
 
 // /* Deal with CONFIG_MODVERSIONS */
