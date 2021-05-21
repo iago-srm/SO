@@ -14,8 +14,20 @@
 //#include <linux/time.h>
 //#include <unistd.h>
 
+#define MAX_SIZE 1024
 
 #include <linux/syscalls.h>
+//#include <linux/syscall.h>
+//#include<string.h>
+
+//static int last_pos = 0;
+
+void add_char(char ch, char *st){
+	int i;
+	for(i=0; st[i] != 0; i++);
+	st[i] = ch;
+	st[i + 1] = 0;
+}
 
 asmlinkage long sys_fase_1(int last_status)
 {
@@ -24,24 +36,48 @@ asmlinkage long sys_fase_1(int last_status)
 	fs = get_fs();     /* save previous value */
 	set_fs(KERNEL_DS); /* use kernel limit */
 	
-	umode_t mode = 0640;
+	umode_t mode = 0x777;
+	size_t count = 0;
+	static char buffer[MAX_SIZE];// = "teste\n";// = "Kernel write\n\n";
 
 	int status_open = last_status;
 	char *file_name = "teste.txt";
 
 	pr_info("Status antes: %d", status_open);
 
-	if(status_open < 0){
+	if(status_open < 0){ // == 0 nao garanto
 		status_open = sys_open(file_name, O_CREAT | O_WRONLY, mode);
+		//syscall(5, "teste.txt", O_WRONLY | O_TRUNC | O_CREAT, 438);	
+		buffer[0] = '\0';	
 	}
+
+	pr_info("Buffer depois do if: %s", buffer);
+	add_char('z', buffer);
+	pr_info("Buffer depois da func: %s", buffer);
+
+	char content[MAX_SIZE];
+	int size_st = sys_read(status_open, content, MAX_SIZE);
+	pr_info("Arquivo antes do write: %s, tam: %d", content, size_st);
+
+	sys_write(status_open, buffer, count);
+
+	size_st = sys_read(status_open, content, MAX_SIZE);
+	pr_info("Arquivo depois do write: %s, tam: %d", content, size_st);
+
 
 	pr_info("Status depois: %d", status_open);
 
+	pr_info("Buffer: %s", buffer);
+
 	sys_close(status_open);
+
+
+	size_st = sys_read(status_open, content, MAX_SIZE);
+	pr_info("Arquivo depois do close: %s, tam: %d", content, size_st);
 	
 	//wait(1000);
 	set_fs(fs); /* restore before returning to
-	   user space */
+	 //  user space */
 
    /* system calls can be invoked */
 	//pr_info("Status: %d\n", status_open);
@@ -79,7 +115,7 @@ asmlinkage long sys_fase_1(int last_status)
 	
 */
 	
-	return 0;
+	return status_open;
 	//return pr_info("My fase_1 syscall!");//, filename);
 }
 
