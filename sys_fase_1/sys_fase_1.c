@@ -46,9 +46,13 @@ asmlinkage long sys_fase_1(int last_status)
 	pr_info("Status antes: %d", status_open);
 
 	if(status_open < 0){ // == 0 nao garanto
-		status_open = sys_open(file_name, O_CREAT | O_WRONLY, mode);
+		status_open = sys_open(file_name, O_CREAT | O_RDWR/*O_WRONLY*/, mode);
 		//syscall(5, "teste.txt", O_WRONLY | O_TRUNC | O_CREAT, 438);	
-		buffer[0] = '\0';	
+		buffer[0] = 'a';	
+		buffer[1] = 'b';	
+		buffer[2] = 'c';	
+		buffer[3] = 'd';	
+		buffer[4] = '\0';	
 	}
 
 	pr_info("Buffer depois do if: %s", buffer);
@@ -56,23 +60,22 @@ asmlinkage long sys_fase_1(int last_status)
 	pr_info("Buffer depois da func: %s", buffer);
 
 	char content[MAX_SIZE];
-	int size_st = sys_read(status_open, content, MAX_SIZE);
+	int size_st = sys_read(status_open, content, 10);
 	pr_info("Arquivo antes do write: %s, tam: %d", content, size_st);
 
 	sys_write(status_open, buffer, count);
 
-	size_st = sys_read(status_open, content, MAX_SIZE);
+	size_st = sys_read(status_open, content, 10);
 	pr_info("Arquivo depois do write: %s, tam: %d", content, size_st);
 
 
 	pr_info("Status depois: %d", status_open);
-
 	pr_info("Buffer: %s", buffer);
 
-	sys_close(status_open);
+	//sys_close(status_open);
 
 
-	size_st = sys_read(status_open, content, MAX_SIZE);
+	size_st = sys_read(status_open, content, 10);
 	pr_info("Arquivo depois do close: %s, tam: %d", content, size_st);
 	
 	//wait(1000);
