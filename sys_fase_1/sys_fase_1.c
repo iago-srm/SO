@@ -31,52 +31,72 @@ void add_char(char ch, char *st){
 
 asmlinkage long sys_fase_1(int last_status)
 {
+	pr_info("-------------------------------------------------------------------------------------------------");
 
-	mm_segment_t fs;
-	fs = get_fs();     /* save previous value */
-	set_fs(KERNEL_DS); /* use kernel limit */
-	
+	// Declaracoes das variaveis
 	umode_t mode = 0x777;
-	size_t count = 0;
+	size_t count = 1;//MAX_SIZE;
 	static char buffer[MAX_SIZE];// = "teste\n";// = "Kernel write\n\n";
 
 	int status_open = last_status;
 	char *file_name = "teste.txt";
+	int size_st;
+	int status_write;
+	char content[MAX_SIZE];
 
-	pr_info("Status antes: %d", status_open);
+	mm_segment_t fs;
+	
+	fs = get_fs();     /* save previous value */
+	set_fs(KERNEL_DS); /* use kernel limit */
+	
+
+	pr_info("Id / status open antes do if: %d", status_open);
 
 	if(status_open < 0){ // == 0 nao garanto
-		status_open = sys_open(file_name, O_CREAT | O_RDWR/*O_WRONLY*/, mode);
+		status_open = sys_open(file_name, O_CREAT | O_APPEND | O_RDWR | O_LARGEFILE/*O_WRONLY*/, mode);
+		pr_info("Arquivo %s aberto, o id / status open dele e %d", file_name, status_open);
+
 		//syscall(5, "teste.txt", O_WRONLY | O_TRUNC | O_CREAT, 438);	
 		buffer[0] = 'a';	
 		buffer[1] = 'b';	
 		buffer[2] = 'c';	
 		buffer[3] = 'd';	
-		buffer[4] = '\0';	
+		buffer[4] = '\0';
+
+		//sys_write(status_open, buffer, count);	
 	}
 
-	pr_info("Buffer depois do if: %s", buffer);
+	pr_info("Buffer depois do if do open: %s", buffer);
 	add_char('z', buffer);
-	pr_info("Buffer depois da func: %s", buffer);
+	pr_info("Buffer depois da func de concat: %s", buffer);
 
-	char content[MAX_SIZE];
-	int size_st = sys_read(status_open, content, 10);
-	pr_info("Arquivo antes do write: %s, tam: %d", content, size_st);
+	//content[0] = 'c';
+	//content[0] = '\0';
+	pr_info("Content antes do read: %s", content);
 
-	sys_write(status_open, buffer, count);
+	/*int*/ size_st = sys_read(status_open, /*&*/content, count);
+	pr_info("Content antes do write: %s, tam: %d", content, size_st);
 
-	size_st = sys_read(status_open, content, 10);
-	pr_info("Arquivo depois do write: %s, tam: %d", content, size_st);
+	//char ch = 'k';
+	/*int*/ status_write = sys_write(status_open, &buffer[0], count);
+	pr_info("Status write: %d, buffer que tentou ser escrito: %s", status_write, buffer);
+	pr_info("Erros possiveis: EAGAIN: %d, EWOULDBLOCK %d, EBADF %d, EDETADDRESSQ %d, EDQUOT %d, EFAULT %d, EFBIG %d, EINTR %d", 
+		EAGAIN, EWOULDBLOCK, EBADF, 0, EDQUOT, EFAULT,
+		EFBIG, EINTR);
+
+	size_st = sys_read(status_open, content, count);
+	pr_info("Content depois do write: %s, tam: %d", content, size_st);
 
 
-	pr_info("Status depois: %d", status_open);
-	pr_info("Buffer: %s", buffer);
+	pr_info("Status open depois de tudo: %d", status_open);
+	pr_info("Buffer depois de tudo: %s", buffer);
 
-	//sys_close(status_open);
+	sys_close(status_open);
+	pr_info("Arquivo com id / status %d fechado", status_open);
 
 
-	size_st = sys_read(status_open, content, 10);
-	pr_info("Arquivo depois do close: %s, tam: %d", content, size_st);
+	size_st = sys_read(status_open, content, count);
+	pr_info("Content depois do close: %s, tam: %d", content, size_st);
 	
 	//wait(1000);
 	set_fs(fs); /* restore before returning to
