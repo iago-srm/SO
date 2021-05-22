@@ -5,7 +5,7 @@
 //#include<sys/module.h>
 
 
-//#include <unistd.h>
+#include <unistd.h>
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -18,29 +18,14 @@ int main()
    int last_status = -1;
 
    while (1) {
-      // hello_world();
       last_status = fase_1(last_status);
+      sleep(10);
 
-
-	// Open file
-	//char *pathname = "text.txt";
-	//int mode = ;
-	//int flags = O_WRONLY; // O_CREAT
-	//int status_open = open(pathname, flags);
-
-	//printk("Status: %d", status_open);[
-	//pr_info("Teste; status: %d", status_open);
-
+      if(fork()){ // pai
+	fopen();
+      }else{ // filho
+	
+      }
    }
    return 0;
 }
-
-
-
-
-
-
-
-
-
-
