@@ -33,6 +33,7 @@ int main()
 	int status_unlink = unlink(make_space_file);
 	printf("Status unlink: %d\n", status_unlink);
 
+
 	pid_t pid = fork();
 	if (pid == -1) {
 		perror("fork failed");
