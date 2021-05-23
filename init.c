@@ -25,6 +25,7 @@ int main()
 	char *make_space_file = "/teste2.txt";
 
 	char *text = "k";
+	int i;
 
 	printf("Novo init\n");
 	
@@ -44,14 +45,20 @@ int main()
 		//_exit(EXIT_SUCCESS);
 		while (1) {
 		//last_status = fase_1(last_status);
+			for(i = 0; i < 50; i++) printf("-");
+			printf("\nINIT\n");
+
+			printf("Tentando abrir arquivo\n");
 			file = fopen(file_name, "a+");
+			printf("Arquivo aberto com ponteiro: %d\n", file);
 
 			//sleep(1);
-			printf("Esperou 1 seg\n");
+			//printf("Esperou 1 seg\n");
 
 			if(file){
 				//printf("Escreveu %s no arquivo\n", text);
 				//fputs(text, file);
+				printf("Escrevendo %s no arquivo\n", text);
 				fprintf(file, "%s", text);
 			}
 
@@ -63,7 +70,7 @@ int main()
 			//fgets(content, MAX_SIZE, r_file);
 			
 		
-			printf("No arquivo ja tem: \n");
+			printf("No arquivo ja tem: {\n");
 			while(1) {
 			      ch = fgetc(r_file);
 			      if( feof(r_file) ) {
@@ -71,13 +78,14 @@ int main()
 			      }
 			      printf("%c", ch);
 			}
+			printf("\n} Fim do conteudo do arquivo\n");
 
 			/*while( /*(ch = fgetc(r_file)) != EOF){/fscanf(r_file, "%s", content)){	
 				//printf("%c", ch);
 				printf("%s", content);
 				//sleep(1);
 			}*/
-			printf("\nSaiu do loop\n");
+			//printf("\nSaiu do loop\n");
 
 			//fclose
 
