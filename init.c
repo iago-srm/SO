@@ -12,9 +12,7 @@ int main()
 
 	char *file_name = "/teste.txt";
 	char *make_space_file = "/teste2.txt";
-
 	char *text = "k";
-	int i;
 
 	printf("Novo init\n");
 	
@@ -23,8 +21,8 @@ int main()
 	int status_unlink = unlink(make_space_file);
 	printf("Status unlink: %d\n", status_unlink);
 
-
 	pid_t pid = fork();
+  
 	if (pid == -1) {
 		perror("fork failed");
 		return -1;
@@ -49,26 +47,31 @@ int main()
 			fclose(file);
 
 			FILE *r_file = fopen(file_name, "r+");
-			char content[MAX_SIZE];
 			char ch;
 	
 			printf("No arquivo ja tem: {\n");
+      
 			while(1) {
 			      ch = fgetc(r_file);
-			      if( feof(r_file) ) {
-				 break;
-			      }
+			      if( feof(r_file) ) break;
 			      printf("%c", ch);
 			}
 
 			printf("\n} Fim do conteudo do arquivo\n");
+
 		}
 	}
+  
 	else {
 		int status;
-		printf("Father process\n");
+		printf("Parent process\n");
 		(void)waitpid(pid, &status, 0);
 		printf("Status do pid: %d\n", status);
+
+		while(1){
+			printf("Fim da execução\n");
+			sleep(10);
+		}
 	}
 
 	return 0;
