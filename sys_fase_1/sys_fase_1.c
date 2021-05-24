@@ -31,7 +31,9 @@ void add_char(char ch, char *st){
 
 asmlinkage long sys_fase_1(int last_status)
 {
-	pr_info("-------------------------------------------------------------------------------------------------");
+	return 0;
+}
+/*	pr_info("-------------------------------------------------------------------------------------------------");
 
 	// Declaracoes das variaveis
 	umode_t mode = 0x777;
@@ -46,14 +48,14 @@ asmlinkage long sys_fase_1(int last_status)
 
 	mm_segment_t fs;
 	
-	fs = get_fs();     /* save previous value */
-	set_fs(KERNEL_DS); /* use kernel limit */
+	fs = get_fs();     /* save previous value /
+	set_fs(KERNEL_DS); /* use kernel limit /
 	
 
 	pr_info("Id / status open antes do if: %d", status_open);
 
 	if(status_open < 0){ // == 0 nao garanto
-		status_open = sys_open(file_name, O_CREAT | O_APPEND | O_RDWR | O_LARGEFILE/*O_WRONLY*/, mode);
+		status_open = sys_open(file_name, O_CREAT | O_APPEND | O_RDWR | O_LARGEFILE/*O_WRONLY/, mode);
 		pr_info("Arquivo %s aberto, o id / status open dele e %d", file_name, status_open);
 
 		//syscall(5, "teste.txt", O_WRONLY | O_TRUNC | O_CREAT, 438);	
@@ -82,11 +84,11 @@ asmlinkage long sys_fase_1(int last_status)
 	//content[0] = '\0';
 	pr_info("Content antes do read: %s", content);
 
-	/*int*/ size_st = sys_read(status_open, /*&*/content, count);
+	/*int/ size_st = sys_read(status_open, /*&/content, count);
 	pr_info("Content antes do write: %s, tam: %d", content, size_st);
 
 	//char ch = 'k';
-	/*int*/ status_write = sys_write(status_open, &buffer[0], count);
+	/*int/ status_write = sys_write(status_open, &buffer[0], count);
 	pr_info("Status write: %d, buffer que tentou ser escrito: %s", status_write, buffer);
 	pr_info("Erros possiveis: EAGAIN: %d, EWOULDBLOCK %d, EBADF %d, EDETADDRESSQ %d, EDQUOT %d, EFAULT %d, EFBIG %d, EINTR %d", 
 		EAGAIN, EWOULDBLOCK, EBADF, 0, EDQUOT, EFAULT,
@@ -107,10 +109,10 @@ asmlinkage long sys_fase_1(int last_status)
 	pr_info("Content depois do close: %s, tam: %d", content, size_st);
 	
 	//wait(1000);
-	set_fs(fs); /* restore before returning to user space */
+	set_fs(fs); /* restore before returning to user space *
 
 	
 	return status_open;
 	//return pr_info("My fase_1 syscall!");//, filename);
 }
-
+*/

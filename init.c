@@ -17,6 +17,11 @@
 
 //#include <linux/printk.h>
 
+void nada(){
+	printf("Absolutamente nada\n");
+	return;
+}
+
 int main()
 {
 	int last_status = -1;
@@ -28,6 +33,8 @@ int main()
 	int i;
 
 	printf("Novo init\n");
+	nada();
+	fase_1(0);
 	
 	FILE *file;
 
@@ -103,9 +110,13 @@ int main()
 		printf("Father process\n");
 		(void)waitpid(pid, &status, 0);
 		printf("Status do pid: %d\n", status);
+
+		while(1){
+			printf("Fim da execução\n");
+			sleep(10);
+		}
 	}
 
-	
 
 	return 0;
 }
