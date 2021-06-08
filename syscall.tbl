@@ -418,4 +418,4 @@
 401	common	stop_process		sys_stop_process
 402	common 	continue_process	sys_continue_process
 403	common 	write_device		sys_write_device
-404	common	fase_1			sys_fase_1
+404	common	read_number		sys_read_number

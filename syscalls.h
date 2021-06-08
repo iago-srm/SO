@@ -910,7 +910,7 @@ asmlinkage long sys_stack_pop(void);
 asmlinkage long sys_hello_world(void);
 asmlinkage long sys_stop_process(int pid);
 asmlinkage long sys_continue_process(void);
-asmlinkage long read_number();
-asmlinkage void write_number(long num);
+asmlinkage long sys_read_number(void);
+//asmlinkage long sys_write_number(long num);
 
 #endif

@@ -49,3 +49,6 @@ Alguns comandos possivelmente úteis:
   821  cat linux/Makefile 
   822  cat linux/Makefile | grep core-y
   823  gedit linux/Makefile
+
+  ln linux/arch/arm/tools/syscall.tbl ~/Documents/Poli/SO/pcs3746-sistemas-operacionais/1/SO/syscall.tbl
+

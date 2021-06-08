@@ -1,1 +1,1 @@
-obj-y := sys_nossas_funcs.o
+obj-y := sys_read_number.o
